@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-
+import image7 from "../../assets/image7.jpeg";
 const slides = [
-  { id: 1, content: "Slide 1", image: "https://via.placeholder.com/300x450" },
-  { id: 2, content: "Slide 2", image: "https://via.placeholder.com/300x450" },
-  { id: 3, content: "Slide 3", image: "https://via.placeholder.com/300x450" },
-  { id: 4, content: "Slide 4", image: "https://via.placeholder.com/300x450" },
+  { id: 1, content: "Slide 1", image: image7 },
+  { id: 2, content: "Slide 2", image: image7 },
 ];
 
 const BookSlider = () => {
@@ -58,7 +56,7 @@ const BookSlider = () => {
             <img
               src={slide.image}
               alt={slide.content}
-              className="w-full h-auto object-cover" 
+              className="w-full h-auto object-cover"
             />
           </div>
         ))}
