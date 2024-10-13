@@ -15,7 +15,7 @@ const Header = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Link array to avoid duplication
+
   const links = [
     { to: "/", label: "Home", icon: <FaHome className="mr-2" /> },
     { to: "/jobs", label: "Jobs", icon: <FaBriefcase className="mr-2" /> },

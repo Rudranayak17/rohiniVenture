@@ -39,7 +39,7 @@ const BookSlider = () => {
   }, []);
 
   return (
-    <div className="relative max-w-md h-3/4 overflow-hidden mx-auto mb-4">
+    <div >
       <button
         className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-gray-700 rounded-full p-2 text-white z-10"
         onClick={prevSlide}

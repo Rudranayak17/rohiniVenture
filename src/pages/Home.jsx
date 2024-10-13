@@ -3,7 +3,6 @@ import Slider from "../components/slider/horizontalSlider";
 import BookSlider from "../components/slider/BookSlider";
 import About from "../components/about/About";
 
-
 const Home = () => {
   return (
     <>
@@ -12,10 +11,10 @@ const Home = () => {
         Internship, Apprenticeship, Job and Business Opportunities Across BVG
         Group Companies
       </h1>
-
-      <BookSlider />
+      <div className="relative max-w-md h-3/4 overflow-hidden mx-auto mb-4">
+        <BookSlider />
+      </div>
       <About />
-    
     </>
   );
 };
