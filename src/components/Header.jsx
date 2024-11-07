@@ -50,7 +50,7 @@ function Header() {
             <li><Link to="/about" className="hover:text-blue-600">About</Link></li>
             <li><Link to="/apply" className="hover:text-blue-600">Apply</Link></li>
             <li><Link to="/contact" className="hover:text-blue-600">Contact</Link></li>
-            <li><Link to="/cmykpy" className="hover:text-blue-600">CMYKPY</Link></li>
+            {/* <li><Link to="/cmykpy" className="hover:text-blue-600">CMYKPY</Link></li> */}
           </ul>
         </nav>
       </div>

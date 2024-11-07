@@ -11,24 +11,24 @@ const Footer = () => {
           <div className="mb-4 md:mb-0">
             <h2 className="text-lg font-bold">Connect with Us</h2>
             <p className="mt-2">
-              Phone: <a href="tel:+11234567890" className="text-blue-400 hover:underline">(123) 456-7890</a>
+              Phone: <a href="tel:+919359123713 " className="text-blue-400 hover:underline"> 9359123713 </a> and <a href="tel:+919860401545 " className="text-blue-400 hover:underline"> 9860401545 </a>
             </p>
             <p>
-              Email: <a href="mailto:contact@example.com" className="text-blue-400 hover:underline">contact@example.com</a>
+              Email: <a href="mailto:akshaysarode@rohiniventure.com" className="text-blue-400 hover:underline">akshaysarode@rohiniventure.com</a>
             </p>
           </div>
 
           {/* Address Section - Responsive Design */}
           <div className="mb-4 md:mb-0">
             <h2 className="text-lg font-bold">Address</h2>
-            <p className="mt-2 text-sm md:text-base">BVG House, Premier Plaza, Old Mumbai - Pune Hwy, Anand Nagar, Chinchwad, Pune, Pimpri-Chinchwad, Maharashtra 411019</p>
+            <p className="mt-2 text-sm md:text-base ">BVG House, Premier Plaza, Old Mumbai - Pune Hwy, Anand Nagar, Chinchwad, Pune, Pimpri-Chinchwad, Maharashtra 411019</p>
           </div>
 
           {/* Associate Partner Section with Bigger Icon and Text Below */}
-          <div className="flex flex-col items-center">
+          {/* <div className="flex flex-col items-center">
             <img src={image} alt="QuickHire Logo" className="w-20 h-20 object-contain mb-2" />
             <h2 className="text-lg font-bold">Our brand QuickHire</h2>
-          </div>
+          </div> */}
         </div>
 
         {/* Social Media Icons Section */}
