@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import intro from "../assets/intro.mp4";
-import { IoMdVolumeMute } from 'react-icons/io';
-import { IoVolumeMute } from 'react-icons/io5';
-
+import { IoVolumeMute, IoVolumeHigh } from 'react-icons/io5';
 
 const About = () => {
   const [isMuted, setIsMuted] = useState(true);
@@ -12,16 +10,12 @@ const About = () => {
     setIsMuted(!isMuted);
   };
 
-  // Animation variants for the text to slide in from the left
   const textVariants = {
     hidden: { opacity: 0, x: -50 },
     visible: {
       opacity: 1,
       x: 0,
-      transition: {
-        duration: 0.8, // Controls the speed of the animation
-        ease: 'easeOut',
-      },
+      transition: { duration: 0.8, ease: 'easeOut' },
     },
   };
 
@@ -45,7 +39,7 @@ const About = () => {
         onClick={toggleMute}
         className="absolute top-5 right-5 z-10 bg-white bg-opacity-80 p-2 rounded-full text-gray-800 shadow-md"
       >
-        {isMuted ? <IoVolumeMute size={30} /> : <IoMdVolumeMute size={30} />}
+        {isMuted ? <IoVolumeMute size={30} /> : <IoVolumeHigh size={30} />}
       </button>
 
       {/* Content */}
@@ -60,7 +54,7 @@ const About = () => {
         >
           <h2 className="text-4xl font-semibold mb-4">About Rohini Venture</h2>
           <p className="text-lg max-w-2xl mx-auto">
-            Rohini Venture is a possibility platform dedicated to enabling people with disabilities (PWD) by connecting them to flexible, rewarding, and relevant job opportunities. We collaborate with leading companies to provide top talent, fostering inclusion, diversity, and business growth. Our mission is to create 1 million jobs for PWD candidates, transforming businesses and lives with infinite potential.
+            Rohini Venture is a platform dedicated to empowering Persons with Disabilities (PWDs) by connecting them with flexible, rewarding, and relevant job opportunities. Partnering with leading companies, we foster inclusion, diversity, and business growth. Our mission is to create 1 million job opportunities for PWDs, transforming both businesses and lives.
           </p>
         </motion.div>
 
@@ -75,9 +69,9 @@ const About = () => {
           <h2 className="text-4xl font-semibold mb-4">Our Achievements</h2>
           <div className="flex flex-wrap justify-center gap-6">
             <AchievementCard number="0" description="Trained Employees" />
-            <AchievementCard number="0" description="Cities" />
-            <AchievementCard number="0" description="Clients" />
-            <AchievementCard number="0" description="Sites" />
+            <AchievementCard number="0" description="Cities Reached" />
+            <AchievementCard number="0" description="Corporate Clients" />
+            <AchievementCard number="0" description="Job Sites Supported" />
           </div>
         </motion.div>
       </div>

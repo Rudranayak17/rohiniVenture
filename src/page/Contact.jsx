@@ -7,6 +7,17 @@ const Contact = () => {
     name: '',
     email: '',
     message: '',
+    jobTitle: '',
+    jobDescription: '',
+    employmentType: '',  // New state for employment type
+    numberOfPositions: '',
+    requiredSkills: [],
+    experienceLevel: '',
+    budgetRange: '',
+    projectDurationStart: '',
+    projectDurationEnd: '',
+    requirements: '',
+    resume: null,
   });
 
   const handleChange = (e) => {
@@ -14,6 +25,27 @@ const Contact = () => {
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
+    }));
+  };
+
+  const handleMultiSelectChange = (e) => {
+    const { options } = e.target;
+    const selectedSkills = [];
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].selected) {
+        selectedSkills.push(options[i].value);
+      }
+    }
+    setFormData((prevData) => ({
+      ...prevData,
+      requiredSkills: selectedSkills,
+    }));
+  };
+
+  const handleFileChange = (e) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      resume: e.target.files[0],
     }));
   };
 
@@ -59,8 +91,9 @@ const Contact = () => {
           >
             <h2 className="text-3xl font-bold mb-4 text-center text-blue-600">Contact Us</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Name */}
               <div>
-                <label className="block text-gray-700 font-semibold">Name</label>
+                <label className="block text-gray-700 font-semibold">Company Name </label>
                 <input
                   type="text"
                   name="name"
@@ -70,8 +103,23 @@ const Contact = () => {
                   className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 />
               </div>
+
+              {/* Contact Person */}
               <div>
-                <label className="block text-gray-700 font-semibold">Email</label>
+                <label className="block text-gray-700 font-semibold">Contact Person</label>
+                <input
+                  type="text"
+                  name="contactPerson"
+                  value={formData.contactPerson}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                />
+              </div>
+
+              {/* Email */}
+              <div>
+                <label className="block text-gray-700 font-semibold">Contact Email</label>
                 <input
                   type="email"
                   name="email"
@@ -81,23 +129,214 @@ const Contact = () => {
                   className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 />
               </div>
+
+              {/* Phone Number */}
               <div>
-                <label className="block text-gray-700 font-semibold">Message</label>
-                <textarea
-                  name="message"
-                  value={formData.message}
+                <label className="block text-gray-700 font-semibold">Contact Phone Number</label>
+                <input
+                  type="text"
+                  name="phone"
+                  value={formData.phone}
                   onChange={handleChange}
                   required
                   className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                  rows="4"
-                ></textarea>
+                />
               </div>
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white p-3 rounded hover:bg-blue-700 transition duration-200 ease-in-out"
-              >
-                Send Message
-              </button>
+
+              {/* Company Website */}
+              <div>
+                <label className="block text-gray-700 font-semibold">Company Website</label>
+                <input
+                  type="text"
+                  name="website"
+                  value={formData.website}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                />
+              </div>
+
+              {/* Job Title */}
+              <div>
+                <label className="block text-gray-700 font-semibold">Job Title</label>
+                <input
+                  type="text"
+                  name="jobTitle"
+                  value={formData.jobTitle}
+                  onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                />
+              </div>
+
+              {/* Job Description */}
+              <div>
+                <label className="block text-gray-700 font-semibold">Job Description</label>
+                <textarea
+                  name="jobDescription"
+                  value={formData.jobDescription}
+                  onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                />
+              </div>
+
+              {/* Employment Type (Radio Buttons) */}
+              <div>
+                <label className="block text-gray-700 font-semibold">Employment Type</label>
+                <div className="flex space-x-4">
+                  <div>
+                    <input
+                      type="radio"
+                      id="partTime"
+                      name="employmentType"
+                      value="Part-Time"
+                      checked={formData.employmentType === 'Part-Time'}
+                      onChange={handleChange}
+                      className="mr-2"
+                    />
+                    <label htmlFor="partTime">Part-Time</label>
+                  </div>
+                  <div>
+                    <input
+                      type="radio"
+                      id="remote"
+                      name="employmentType"
+                      value="Remote"
+                      checked={formData.employmentType === 'Remote'}
+                      onChange={handleChange}
+                      className="mr-2"
+                    />
+                    <label htmlFor="remote">Remote</label>
+                  </div>
+                  <div>
+                    <input
+                      type="radio"
+                      id="fullTime"
+                      name="employmentType"
+                      value="Full-Time"
+                      checked={formData.employmentType === 'Full-Time'}
+                      onChange={handleChange}
+                      className="mr-2"
+                    />
+                    <label htmlFor="fullTime">Full-Time</label>
+                  </div>
+                </div>
+              </div>
+
+              {/* Number of Positions */}
+              <div>
+                <label className="block text-gray-700 font-semibold">Number of Positions</label>
+                <input
+                  type="number"
+                  name="numberOfPositions"
+                  value={formData.numberOfPositions}
+                  onChange={handleChange}
+                  min={1}
+                  className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                />
+              </div>
+
+              {/* Required Skills */}
+              <div>
+                <label className="block text-gray-700 font-semibold">Required Skills</label>
+                <select
+                  name="requiredSkills"
+                  multiple
+                  value={formData.requiredSkills}
+                  onChange={handleMultiSelectChange}
+                  className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                >
+          <option value="Digital Sales">Digital Sales</option>
+          <option value="Marketing">Marketing</option>
+
+          <option value="Finance">Finance</option>
+          <option value="Content Development">Content Development</option>
+          <option value="Graphic Designer">Graphic Designer</option>
+                </select>
+              </div>
+
+              {/* Experience Level */}
+              <div>
+                <label className="block text-gray-700 font-semibold">Experience Level</label>
+                <select
+                  name="experienceLevel"
+                  value={formData.experienceLevel}
+                  onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                >
+                  <option value="junior">Junior</option>
+                  <option value="mid">Mid</option>
+                  <option value="senior">Senior</option>
+                </select>
+              </div>
+
+              {/* Budget Range */}
+              <div>
+                <label className="block text-gray-700 font-semibold">Budget Range</label>
+                <input
+                  type="text"
+                  name="budgetRange"
+                  value={formData.budgetRange}
+                  onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                />
+              </div>
+
+              {/* Project Duration */}
+              <div className="flex space-x-4">
+                <div>
+                  <label className="block text-gray-700 font-semibold">Project Start Date</label>
+                  <input
+                    type="date"
+                    name="projectDurationStart"
+                    value={formData.projectDurationStart}
+                    onChange={handleChange}
+                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700 font-semibold">Project End Date</label>
+                  <input
+                    type="date"
+                    name="projectDurationEnd"
+                    value={formData.projectDurationEnd}
+                    onChange={handleChange}
+                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                  />
+                </div>
+              </div>
+
+              {/* Requirements */}
+              <div>
+                <label className="block text-gray-700 font-semibold">Additional Requirements</label>
+                <textarea
+                  name="requirements"
+                  value={formData.requirements}
+                  onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                />
+              </div>
+
+              {/* Resume Upload */}
+              <div>
+                <label className="block text-gray-700 font-semibold">Upload Resume</label>
+                <input
+                  type="file"
+                  name="resume"
+                  onChange={handleFileChange}
+                  accept=".pdf,.doc,.docx"
+                  className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                />
+              </div>
+
+              {/* Submit Button */}
+              <div className="text-center">
+                <button
+                  type="submit"
+                  className="bg-blue-600 text-white font-semibold py-2 px-6 rounded-full hover:bg-blue-500 transition"
+                >
+                  Submit
+                </button>
+              </div>
             </form>
           </motion.div>
         </div>
