@@ -70,7 +70,7 @@ function Header() {
               <li><Link to="/about" className="hover:text-blue-600" onClick={toggleDrawer}>About</Link></li>
               <li><Link to="/apply" className="hover:text-blue-600" onClick={toggleDrawer}>Apply</Link></li>
               <li><Link to="/contact" className="hover:text-blue-600" onClick={toggleDrawer}>Contact</Link></li>
-              <li><Link to="/cmykpy" className="hover:text-blue-600" onClick={toggleDrawer}>CMYKPY</Link></li>
+              {/* <li><Link to="/cmykpy" className="hover:text-blue-600" onClick={toggleDrawer}>CMYKPY</Link></li> */}
             </ul>
           </motion.div>
         )}

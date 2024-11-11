@@ -55,42 +55,60 @@ const AboutPage = () => {
             </motion.section>
 
             {/* Values */}
-            <motion.section
+    {/* Values */}
+<motion.section
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true }}
+    className="text-center mb-12 max-w-3xl"
+>
+    <motion.h1 className="text-4xl font-bold mb-4" variants={animationVariants} custom={4}>
+        Our Values
+    </motion.h1>
+    <motion.div className="bg-blue-500 h-1 mx-auto mb-4" variants={lineVariants} />
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {[
+            {
+                title: "Leadership for Opportunity",
+                description: "We are committed to leading the way in creating respectful and flexible job opportunities for Persons with Disabilities, setting the standard for inclusive hiring practices across industries.",
+            },
+            {
+                title: "Possibility and Progress",
+                description: "We believe in creating possibilities that enable every PWD to achieve meaningful career growth. Our initiatives are driven by the potential we see in each individual and the progress we create for our partners.",
+            },
+            {
+                title: "Community of Inclusion",
+                description: "Our work centers on building a cohesive community where PWDs, employers, and partners contribute to each other’s growth and success. We create networks that lead collaboration, understanding, and shared purpose.",
+            },
+            {
+                title: "Integrity and Trust",
+                description: "We uphold integrity in all interactions, building trust through transparent and ethical practices. We respect each partner and individual, ensuring fairness and accountability in our work.",
+            },
+            {
+                title: "Commitment to Impact",
+                description: "Our mission is to drive real outcomes that benefit PWDs and the organizations we serve. We focus on measurable results that create lasting change for our stakeholders and fulfill our vision of an inclusive world.",
+            },
+            {
+                title: "Respect for Every Contribution",
+                description: "We value each person’s achievements and potential, recognizing that every effort brings us closer to our shared goals. Celebrating contributions, we nurture a culture of acknowledgment and appreciation.",
+            },
+        ].map((value, index) => (
+            <motion.div
+                key={index}
+                className="bg-white p-6 rounded-lg shadow-lg border border-gray-300"
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
-                className="text-center mb-12 max-w-3xl"
+                custom={index + 5}
+                variants={animationVariants}
             >
-                <motion.h1 className="text-4xl font-bold mb-4" variants={animationVariants} custom={4}>
-                    Our Values
-                </motion.h1>
-                <motion.div className="bg-blue-500 h-1 mx-auto mb-4" variants={lineVariants} />
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {[
-                        "Leadership for Opportunity",
-                        "Possibility and Progress",
-                        "Community of Inclusion",
-                        "Integrity and Trust",
-                        "Commitment to Impact",
-                        "Respect for Every Contribution",
-                    ].map((value, index) => (
-                        <motion.div
-                            key={index}
-                            className="bg-white p-6 rounded-lg shadow-lg border border-gray-300"
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true }}
-                            custom={index + 5}
-                            variants={animationVariants}
-                        >
-                            <h3 className="text-xl font-semibold mb-4">{value}</h3>
-                            <p className="text-gray-600">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda excepturi rerum quod fugiat reiciendis facilis consequatur suscipit quidem, quis velit.
-                            </p>
-                        </motion.div>
-                    ))}
-                </div>
-            </motion.section>
+                <h3 className="text-xl font-semibold mb-4">{value.title}</h3>
+                <p className="text-gray-600">{value.description}</p>
+            </motion.div>
+        ))}
+    </div>
+</motion.section>
+
 
             {/* Company Overview */}
             <motion.section

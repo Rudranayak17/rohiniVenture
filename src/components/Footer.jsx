@@ -21,7 +21,7 @@ const Footer = () => {
           {/* Address Section - Responsive Design */}
           <div className="mb-4 md:mb-0">
             <h2 className="text-lg font-bold">Address</h2>
-            <p className="mt-2 text-sm md:text-base ">BVG House, Premier Plaza, Old Mumbai - Pune Hwy, Anand Nagar, Chinchwad, Pune, Pimpri-Chinchwad, Maharashtra 411019</p>
+            <p className="mt-2 text-sm md:text-base ">Address: C5, Aboli Building, HDFC Colony, Chinchwad 411019</p>
           </div>
 
           {/* Associate Partner Section with Bigger Icon and Text Below */}
