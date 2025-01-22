@@ -10,24 +10,26 @@ const Form = () => {
     confirmPassword: "",
     profilePicture: null,
     professionalSummary: "",
-    education: [{ degree: "", institution: "", year: "" }],
+    education: "",
     workExperience: [
       { jobTitle: "", company: "", duration: "", responsibilities: "" },
     ],
     skills: [],
     preferredJobFunctions: [],
+    interview: "",
     employmentPreferences: "",
     availability: "",
-    desiredSalaryRange: "",
+
     resume: null,
     coverLetter: null,
-    references: [{ name: "", contactInfo: "", relationship: "" }],
+    
     consent: false,
     udid: "",
     disabilityCertificate: null,
   });
 
   const handleChange = (e) => {
+    e.preventDefault();
     const { name, value, type, files, checked, multiple } = e.target;
 
     if (type === "checkbox") {
@@ -196,7 +198,23 @@ const Form = () => {
             minLength="8"
           />
         </motion.div>
-
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          custom={0}
+          variants={animationVariants}
+        >
+          <label className="block text-gray-700 capitalize">education</label>
+          <input
+            type="text"
+            name="education"
+            value={formData.education}
+            onChange={handleChange}
+            required
+            className="w-full p-2 border border-gray-300 rounded"
+            maxLength="50"
+          />
+        </motion.div>
         {/* Work Experience */}
         <motion.div
           initial="hidden"
@@ -293,12 +311,12 @@ const Form = () => {
             required
             className="w-full p-2 border border-gray-300 rounded"
           >
-    <option value="Digital Sales">Digital Sales</option>
-          <option value="Marketing">Marketing</option>
+            <option value="Digital Sales">Digital Sales</option>
+            <option value="Marketing">Marketing</option>
 
-          <option value="Finance">Finance</option>
-          <option value="Content Development">Content Development</option>
-          <option value="Graphic Designer">Graphic Designer</option>
+            <option value="Finance">Finance</option>
+            <option value="Content Development">Content Development</option>
+            <option value="Graphic Designer">Graphic Designer</option>
             {/* Add more options as needed */}
           </select>
         </motion.div>
@@ -327,6 +345,41 @@ const Form = () => {
             {/* Add more options as needed */}
           </select>
         </motion.div>
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          custom={8}
+          variants={animationVariants}
+        >
+          <label className="block text-gray-700 capitalize">
+            Interview available
+          </label>
+          <div className="  justify-center ">
+            {/* Adds horizontal gap between radio buttons */}
+            <div className="flex items-center">
+              <input
+                type="radio"
+                name="interview"
+                value="Part-time"
+                onChange={handleChange}
+                checked={formData.interview === "Part-time"}
+                className="mr-2"
+              />
+              <label>online</label>
+            </div>
+            <div className="flex items-center">
+              <input
+                type="radio"
+                name="interview"
+                value="Remote"
+                onChange={handleChange}
+                checked={formData.interview === "Remote"}
+                className="mr-2"
+              />
+              <label>offline</label>
+            </div>
+          </div>
+        </motion.div>
 
         {/* Employment Preferences */}
         <motion.div
@@ -338,7 +391,7 @@ const Form = () => {
           <label className="block text-gray-700 capitalize">
             Employment Preferences
           </label>
-          <div className="space-x-4">
+          <div className="">
             {" "}
             {/* Adds horizontal gap between radio buttons */}
             <div className="flex items-center">
@@ -396,7 +449,7 @@ const Form = () => {
         </motion.div>
 
         {/* Desired Salary Range */}
-        <motion.div
+        {/* <motion.div
           initial="hidden"
           whileInView="visible"
           custom={10}
@@ -414,7 +467,7 @@ const Form = () => {
             className="w-full p-2 border border-gray-300 rounded"
             placeholder="Enter salary range"
           />
-        </motion.div>
+        </motion.div> */}
 
         {/* Resume Upload */}
         <motion.div
@@ -454,61 +507,6 @@ const Form = () => {
             className="w-full p-2 border border-gray-300 rounded"
           />
         </motion.div>
-
-        {/* References */}
-        {/* <motion.div
-          initial="hidden"
-          whileInView="visible"
-          custom={13}
-          variants={animationVariants}
-        >
-          <label className="block text-gray-700 capitalize">References</label>
-          {formData.references.map((reference, index) => (
-            <div key={index} className="space-y-4">
-              <input
-                type="text"
-                name={`referenceName-${index}`}
-                value={reference.name}
-                onChange={(e) => {
-                  const updatedReferences = [...formData.references];
-                  updatedReferences[index].name = e.target.value;
-                  setFormData({ ...formData, references: updatedReferences });
-                }}
-                placeholder="Reference Name"
-                required
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-              <input
-                type="text"
-                name={`contactInfo-${index}`}
-                value={reference.contactInfo}
-                onChange={(e) => {
-                  const updatedReferences = [...formData.references];
-                  updatedReferences[index].contactInfo = e.target.value;
-                  setFormData({ ...formData, references: updatedReferences });
-                }}
-                placeholder="Contact Info"
-                required
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-              <input
-                type="text"
-                name={`relationship-${index}`}
-                value={reference.relationship}
-                onChange={(e) => {
-                  const updatedReferences = [...formData.references];
-                  updatedReferences[index].relationship = e.target.value;
-                  setFormData({ ...formData, references: updatedReferences });
-                }}
-                placeholder="Relationship"
-                required
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </div>
-          ))}
-        </motion.div> */}
-
-        {/* Consent */}
 
         {/* UDID */}
         <motion.div
