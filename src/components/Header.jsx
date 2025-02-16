@@ -1,9 +1,8 @@
-// src/components/Header.js
 import React, { useState } from 'react';
 import logo from "../assets/logo.jpeg";
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaReact } from 'react-icons/fa'; // Import React icon
+import { FaReact, FaUserCircle } from 'react-icons/fa';
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,7 +11,6 @@ function Header() {
     setIsOpen(!isOpen);
   };
 
-  // Animation variants
   const drawerVariants = {
     open: {
       opacity: 1,
@@ -21,7 +19,7 @@ function Header() {
     },
     closed: {
       opacity: 0,
-      x: 100, // Off-screen
+      x: 100,
       transition: { duration: 0.3 },
     },
   };
@@ -31,31 +29,49 @@ function Header() {
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo and Title */}
         <div className="text-2xl font-bold flex items-center">
-          <img src={logo} alt="Rohini Venture Logo" className="w-20 h-20 mr-2" />
-
+          <img src={logo} alt="Rohini Venture Logo" className="w-12 h-12 mr-2" />
           <Link to="/" className="text-blue-600">Rohini Venture</Link>
         </div>
 
         {/* Hamburger Icon for Mobile */}
-        <div className="md:hidden" onClick={toggleDrawer}>
-          <button className="text-blue-600 focus:outline-none">
-            &#9776; {/* Unicode for hamburger icon */}
+        <div className="md:hidden flex items-center gap-4">
+          {/* Sign In Button for Mobile (Outside Drawer) */}
+          <Link 
+            to="/signin" 
+            className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
+          >
+            <FaUserCircle className="text-lg" />
+            <span>Sign In</span>
+          </Link>
+          <button 
+            className="text-blue-600 focus:outline-none p-2" 
+            onClick={toggleDrawer}
+          >
+            &#9776;
           </button>
         </div>
 
-        {/* Navigation Links */}
-        <nav className="hidden md:flex">
-          <ul className="flex space-x-6">
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center">
+          <ul className="flex items-center space-x-6">
             <li><Link to="/jobs" className="hover:text-blue-600">Jobs</Link></li>
             <li><Link to="/about" className="hover:text-blue-600">About</Link></li>
             <li><Link to="/apply" className="hover:text-blue-600">Apply</Link></li>
             <li><Link to="/contact" className="hover:text-blue-600">Contact</Link></li>
-            {/* <li><Link to="/cmykpy" className="hover:text-blue-600">CMYKPY</Link></li> */}
+            <li>
+              <Link 
+                to="/signin" 
+                className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+              >
+                <FaUserCircle />
+                <span>Sign In</span>
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>
 
-      {/* Drawer Menu for Mobile */}
+      {/* Mobile Drawer Menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -70,7 +86,16 @@ function Header() {
               <li><Link to="/about" className="hover:text-blue-600" onClick={toggleDrawer}>About</Link></li>
               <li><Link to="/apply" className="hover:text-blue-600" onClick={toggleDrawer}>Apply</Link></li>
               <li><Link to="/contact" className="hover:text-blue-600" onClick={toggleDrawer}>Contact</Link></li>
-              {/* <li><Link to="/cmykpy" className="hover:text-blue-600" onClick={toggleDrawer}>CMYKPY</Link></li> */}
+              <li className="pt-2 border-t border-gray-200">
+                <Link 
+                  to="/signin" 
+                  className="flex items-center gap-2 text-blue-600 hover:text-blue-700"
+                  onClick={toggleDrawer}
+                >
+                  <FaUserCircle />
+                  <span>Sign In</span>
+                </Link>
+              </li>
             </ul>
           </motion.div>
         )}

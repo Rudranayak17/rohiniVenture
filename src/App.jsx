@@ -16,7 +16,9 @@ const Apply = lazy(() => import('./page/Apply'));
 const Contact = lazy(() => import('./page/Contact'));
 const PageNotFound = lazy(() => import('./page/PageNotFound.jsx'));
 const CMYKPY = lazy(() => import('./page/CMYKPY'));
-
+const Login = lazy(() => import('./page/SignIn.jsx'));
+const SignUp = lazy(() => import('./page/SignUp.jsx'));
+const Applhire = lazy(() => import('./page/hireform.jsx'));
 function App() {
   return (
     <div className='overflow-x-hidden'>
@@ -28,6 +30,9 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/apply" element={<Apply />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/signin" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/apply-hire" element={<Applhire />} />
           <Route path="*" element={<PageNotFound />} />
           {/* <Route path="/cmykpy" element={<CMYKPY />} /> */}
         </Routes>
