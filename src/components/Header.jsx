@@ -1,14 +1,28 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
 import logo from "../assets/logo.jpeg";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaReact, FaUserCircle } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
+import {
+  logout,
+  selectCurrentIsAuth,
+  selectCurrentUser,
+} from "../redux/reducer/auth";
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
-
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector(selectCurrentIsAuth);
+  const user = useSelector(selectCurrentUser);
+  // console.log(user.role)
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
   };
 
   const drawerVariants = {
@@ -41,14 +55,27 @@ function Header() {
 
         {/* Hamburger Icon for Mobile */}
         <div className="md:hidden flex items-center gap-4">
-          {/* Sign In Button for Mobile (Outside Drawer) */}
-          <Link
-            to="/signin"
-            className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
-          >
-            <FaUserCircle className="text-lg" />
-            <span>Sign In</span>
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <Link to="/profile" className="text-blue-600 font-medium">
+                Profile
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="text-red-600 font-medium"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link
+              to="/signin"
+              className="text-blue-600 font-medium flex items-center gap-2"
+            >
+              <FaUserCircle className="text-lg" />
+              <span>Sign In</span>
+            </Link>
+          )}
           <button
             className="text-blue-600 focus:outline-none p-2"
             onClick={toggleDrawer}
@@ -75,31 +102,53 @@ function Header() {
                 Scheme
               </Link>
             </li>
-            <li>
-              <Link to="/apply-hiring" className="hover:text-blue-600">
-                Apply hiring
-              </Link>
-            </li>
+            {user?.role === "jobSeeker" && (
+              <li>
+                <Link to="/apply" className="hover:text-blue-600">
+                  Apply
+                </Link>
+              </li>
+            )}
+            {user?.role === "jobProvider" && (
+              <li>
+                <Link to="/apply-hiring" className="hover:text-blue-600">
+                  Apply Hiring
+                </Link>
+              </li>
+            )}
 
-            <li>
-              <Link to="/apply" className="hover:text-blue-600">
-                Apply
-              </Link>
-            </li>
             <li>
               <Link to="/contact" className="hover:text-blue-600">
                 Contact
               </Link>
             </li>
-            <li>
-              <Link
-                to="/signin"
-                className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
-              >
-                <FaUserCircle />
-                <span>Sign In</span>
-              </Link>
-            </li>
+            {isAuthenticated ? (
+              <>
+                <li>
+                  <Link to="/profile" className="hover:text-blue-600">
+                    Profile
+                  </Link>
+                </li>
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className="text-red-600 px-4 py-2 rounded-md hover:text-red-700"
+                  >
+                    Logout
+                  </button>
+                </li>
+              </>
+            ) : (
+              <li>
+                <Link
+                  to="/signin"
+                  className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+                >
+                  <FaUserCircle />
+                  <span>Sign In</span>
+                </Link>
+              </li>
+            )}
           </ul>
         </nav>
       </div>
@@ -118,8 +167,8 @@ function Header() {
               <li>
                 <Link
                   to="/jobs"
-                  className="hover:text-blue-600"
                   onClick={toggleDrawer}
+                  className="hover:text-blue-600"
                 >
                   Jobs
                 </Link>
@@ -127,8 +176,8 @@ function Header() {
               <li>
                 <Link
                   to="/about"
-                  className="hover:text-blue-600"
                   onClick={toggleDrawer}
+                  className="hover:text-blue-600"
                 >
                   About
                 </Link>
@@ -136,48 +185,73 @@ function Header() {
               <li>
                 <Link
                   to="/scheme"
-                  className="hover:text-blue-600"
                   onClick={toggleDrawer}
+                  className="hover:text-blue-600"
                 >
                   Scheme
                 </Link>
               </li>
-              <li>
-                <Link
-                  to="/apply-hiring"
-                  className="hover:text-blue-600"
-                  onClick={toggleDrawer}
-                >
-                  apply-hiring
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/apply"
-                  className="hover:text-blue-600"
-                  onClick={toggleDrawer}
-                >
-                  Apply
-                </Link>
-              </li>
+
+              {user?.role === "jobSeeker" && (
+                <li>
+                  <Link
+                    to="/apply"
+                    onClick={toggleDrawer}
+                    className="hover:text-blue-600"
+                  >
+                    Apply
+                  </Link>
+                </li>
+              )}
+
+              {user?.role === "jobProvider" && (
+                <li>
+                  <Link
+                    to="/apply-hiring"
+                    onClick={toggleDrawer}
+                    className="hover:text-blue-600"
+                  >
+                    Apply Hiring
+                  </Link>
+                </li>
+              )}
+
               <li>
                 <Link
                   to="/contact"
-                  className="hover:text-blue-600"
                   onClick={toggleDrawer}
+                  className="hover:text-blue-600"
                 >
                   Contact
                 </Link>
               </li>
               <li className="pt-2 border-t border-gray-200">
-                <Link
-                  to="/signin"
-                  className="flex items-center gap-2 text-blue-600 hover:text-blue-700"
-                  onClick={toggleDrawer}
-                >
-                  <FaUserCircle />
-                  <span>Sign In</span>
-                </Link>
+                {isAuthenticated ? (
+                  <>
+                    <Link
+                      to="/profile"
+                      onClick={toggleDrawer}
+                      className="hover:text-blue-600"
+                    >
+                      Profile
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="text-red-600 hover:text-red-700 block w-full text-left mt-2"
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <Link
+                    to="/signin"
+                    onClick={toggleDrawer}
+                    className="flex items-center gap-2 text-blue-600 hover:text-blue-700"
+                  >
+                    <FaUserCircle />
+                    <span>Sign In</span>
+                  </Link>
+                )}
               </li>
             </ul>
           </motion.div>
