@@ -5,6 +5,8 @@ import * as yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import { useRegistrationMutation } from "../redux/api/auth";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "@/redux/reducer/auth";
 
 const schema = yup.object().shape({
   username: yup.string().required("Full name is required"),
@@ -14,7 +16,10 @@ const schema = yup.object().shape({
     .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits")
     .required("Phone number is required"),
   role: yup.string().required("Role is required"),
-  password: yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
+  password: yup
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
   confirmPassword: yup
     .string()
     .oneOf([yup.ref("password"), null], "Passwords must match")
@@ -24,13 +29,18 @@ const schema = yup.object().shape({
 export default function SignUp() {
   const navigate = useNavigate();
   const [registerUser] = useRegistrationMutation();
-  const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(schema) });
-
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(schema) });
+  const dispatch = useDispatch();
   const onSubmit = async (data) => {
-    console.log(data)
+    console.log(data);
     try {
       const response = await registerUser(data).unwrap();
       toast.success(response.message);
+      dispatch(setCredentials(response));
       navigate("/signin");
     } catch (err) {
       toast.error(err?.data?.message || "Registration failed");
@@ -46,7 +56,10 @@ export default function SignUp() {
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             Or{" "}
-            <Link to="/signin" className="font-medium text-indigo-600 hover:text-indigo-500">
+            <Link
+              to="/signin"
+              className="font-medium text-indigo-600 hover:text-indigo-500"
+            >
               sign in to your existing account
             </Link>
           </p>
@@ -64,7 +77,11 @@ export default function SignUp() {
                 className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="Full name"
               />
-              {errors.username && <p className="text-red-500 text-sm">{errors.username.message}</p>}
+              {errors.username && (
+                <p className="text-red-500 text-sm">
+                  {errors.username.message}
+                </p>
+              )}
             </div>
 
             <div>
@@ -79,7 +96,9 @@ export default function SignUp() {
                 className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="Email address"
               />
-              {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email.message}</p>
+              )}
             </div>
 
             <div>
@@ -93,7 +112,9 @@ export default function SignUp() {
                 className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="Phone number"
               />
-              {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
+              {errors.phone && (
+                <p className="text-red-500 text-sm">{errors.phone.message}</p>
+              )}
             </div>
 
             <div>
@@ -109,7 +130,9 @@ export default function SignUp() {
                 <option value="jobProvider">Job Provider</option>
                 <option value="jobSeeker">Job Seeker</option>
               </select>
-              {errors.role && <p className="text-red-500 text-sm">{errors.role.message}</p>}
+              {errors.role && (
+                <p className="text-red-500 text-sm">{errors.role.message}</p>
+              )}
             </div>
 
             <div>
@@ -124,7 +147,11 @@ export default function SignUp() {
                 className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="Password"
               />
-              {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+              {errors.password && (
+                <p className="text-red-500 text-sm">
+                  {errors.password.message}
+                </p>
+              )}
             </div>
 
             <div>
@@ -139,7 +166,11 @@ export default function SignUp() {
                 className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="Confirm password"
               />
-              {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>}
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-sm">
+                  {errors.confirmPassword.message}
+                </p>
+              )}
             </div>
           </div>
 
