@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { useJobSeekerMutation } from "@/redux/api/job";
+import { toast } from "react-toastify";
 
 const Form = () => {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     phone: "",
-    password: "",
-    confirmPassword: "",
-    profilePicture: null,
+
     professionalSummary: "",
     education: "",
     workExperience: [
@@ -20,12 +20,8 @@ const Form = () => {
     employmentPreferences: "",
     availability: "",
 
-    resume: null,
-    coverLetter: null,
-    
     consent: false,
     udid: "",
-    disabilityCertificate: null,
   });
 
   const handleChange = (e) => {
@@ -54,13 +50,23 @@ const Form = () => {
       }));
     }
   };
+  const [createJob] = useJobSeekerMutation();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log(formData);
+  
+    try {
+      const response = await createJob(formData).unwrap();
+      toast.success("Created successfully");
+      console.log("Response:", response);
+    } catch (error) {
+      console.error("Error creating job:", error);
+      toast.error("Failed to create job. Please try again.");
+    }
+  
+    console.log("Form Data:", formData);
   };
-
+  
   const animationVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: (i) => ({
@@ -159,45 +165,6 @@ const Form = () => {
           />
         </motion.div>
 
-        {/* Password */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          custom={3}
-          variants={animationVariants}
-        >
-          <label className="block text-gray-700 capitalize">Password</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            className="w-full p-2 border border-gray-300 rounded"
-            minLength="8"
-          />
-        </motion.div>
-
-        {/* Confirm Password */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          custom={4}
-          variants={animationVariants}
-        >
-          <label className="block text-gray-700 capitalize">
-            Confirm Password
-          </label>
-          <input
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            required
-            className="w-full p-2 border border-gray-300 rounded"
-            minLength="8"
-          />
-        </motion.div>
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -448,29 +415,7 @@ const Form = () => {
           />
         </motion.div>
 
-        {/* Desired Salary Range */}
         {/* <motion.div
-          initial="hidden"
-          whileInView="visible"
-          custom={10}
-          variants={animationVariants}
-        >
-          <label className="block text-gray-700 capitalize">
-            Desired Salary Range
-          </label>
-          <input
-            type="text"
-            name="desiredSalaryRange"
-            value={formData.desiredSalaryRange}
-            onChange={handleChange}
-            required
-            className="w-full p-2 border border-gray-300 rounded"
-            placeholder="Enter salary range"
-          />
-        </motion.div> */}
-
-        {/* Resume Upload */}
-        <motion.div
           initial="hidden"
           whileInView="visible"
           custom={11}
@@ -487,10 +432,10 @@ const Form = () => {
             accept=".pdf,.doc,.docx"
             className="w-full p-2 border border-gray-300 rounded"
           />
-        </motion.div>
+        </motion.div> */}
 
         {/* Cover Letter Upload */}
-        <motion.div
+        {/* <motion.div
           initial="hidden"
           whileInView="visible"
           custom={12}
@@ -506,7 +451,7 @@ const Form = () => {
             accept=".pdf,.doc,.docx"
             className="w-full p-2 border border-gray-300 rounded"
           />
-        </motion.div>
+        </motion.div> */}
 
         {/* UDID */}
         <motion.div
@@ -529,7 +474,7 @@ const Form = () => {
         </motion.div>
 
         {/* Disability Certificate Upload */}
-        <motion.div
+        {/* <motion.div
           initial="hidden"
           whileInView="visible"
           custom={15}
@@ -545,7 +490,7 @@ const Form = () => {
             accept=".pdf,.doc,.docx"
             className="w-full p-2 border border-gray-300 rounded"
           />
-        </motion.div>
+        </motion.div> */}
         <motion.div
           initial="hidden"
           whileInView="visible"

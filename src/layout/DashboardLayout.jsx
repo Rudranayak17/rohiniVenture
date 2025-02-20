@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { LayoutDashboard, Users, GraduationCap, LogOut, Menu } from "lucide-react";
+import {
+  LayoutDashboard,
+  Users,
+  GraduationCap,
+  LogOut,
+  Menu,
+} from "lucide-react";
 
 const DashboardLayout = ({ children }) => {
   const [open, setOpen] = useState(false);
@@ -11,18 +17,18 @@ const DashboardLayout = ({ children }) => {
     <div className="p-4 space-y-4">
       <Button variant="ghost" className="w-full justify-start space-x-2">
         <LayoutDashboard className="h-5 w-5" />
-        <span>Dashboard</span>
+        job Provider
       </Button>
 
       <Button variant="ghost" className="w-full justify-start space-x-2">
         <Users className="h-5 w-5" />
-        <span>Student Management</span>
+        <span>Job Seeker</span>
       </Button>
 
-      <Button variant="ghost" className="w-full justify-start space-x-2">
-        <GraduationCap className="h-5 w-5" />
-        <span>School Management</span>
-      </Button>
+      <Button
+        variant="ghost"
+        className="w-full justify-start space-x-2"
+      ></Button>
 
       <div className="absolute bottom-4 left-4 right-4">
         <Button

@@ -3,7 +3,7 @@ import React, { Suspense, lazy, useEffect } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Loading from "./components/Loading.jsx";
-import { BrowserRouter as Router, useLocation } from "react-router-dom";
+import { Navigate, BrowserRouter as Router, useLocation } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Route, Routes } from "react-router-dom";
@@ -22,6 +22,7 @@ import { useGetMyProfileQuery } from "./redux/api/auth";
 import { LoadingSkeleton } from "./loader/loader.jsx";
 import imagelogo from "@/assets/logo.jpeg";
 import Dashboard from "./page/Admin/dashboard";
+import Layout from "./layout/Layout";
 // Lazy load your pages
 const Home = lazy(() => import("./page/Home"));
 const Jobs = lazy(() => import("./page/Jobs"));
@@ -75,12 +76,20 @@ const AppContent = () => {
             <Route path="/apply-hiring" element={<Applhire />} />
           </Route>
           <Route path="/" element={<Home />} />
-          <Route path="/admin" element={<Dashboard />} />
+      
           <Route path="/jobs" element={<Jobs />} />
           <Route path="/about" element={<AboutPage />} />
 
           <Route path="/contact" element={<Contact />} />
-
+          <Route path="/admin" element={<Navigate to="/admin/dashboard" />} />
+          <Route
+            path="/admin/*"
+            element={
+              <ProtectedRoute role={"admin"}>
+                <Layout />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/scheme" element={<Scheme />} />
           <Route path="*" element={<PageNotFound />} />
           {/* <Route path="/cmykpy" element={<CMYKPY />} /> */}
