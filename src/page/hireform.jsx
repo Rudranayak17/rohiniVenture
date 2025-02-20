@@ -1,53 +1,97 @@
-import React, { useState } from 'react';
-import { 
-  Building2, 
-  Briefcase, 
-  GraduationCap, 
+import React from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import {
+  Building2,
+  Briefcase,
+  GraduationCap,
   IndianRupee,
   Users,
   Calendar,
-  MapPin
-} from 'lucide-react';
+  MapPin,
+} from "lucide-react";
+import { useJobProviderMutation } from "@/redux/api/job";
+import { toast } from "react-toastify";
+
+const schema = yup.object().shape({
+  jobTitle: yup.string().required("Job title is required"),
+  department: yup.string().required("Department is required"),
+  positions: yup
+    .number()
+    .required("Number of positions is required")
+    .positive("Must be a positive number")
+    .integer("Must be a whole number"),
+  location: yup.string().required("Location is required"),
+  employmentType: yup
+    .string()
+    .oneOf(["full-time", "part-time", "contract", "internship"])
+    .required("Employment type is required"),
+  experienceMin: yup
+    .number()
+    .required("Minimum experience is required")
+    .min(0, "Must be at least 0"),
+  experienceMax: yup
+    .number()
+    .required("Maximum experience is required")
+    .min(yup.ref("experienceMin"), "Must be greater than minimum experience"),
+  salaryMin: yup
+    .number()
+    .required("Minimum salary is required")
+    .positive("Must be a positive number"),
+  salaryMax: yup
+    .number()
+    .required("Maximum salary is required")
+    .min(yup.ref("salaryMin"), "Must be greater than minimum salary"),
+  qualifications: yup.string().required("Qualifications are required"),
+  skills: yup.string().required("Skills are required"),
+  responsibilities: yup.string().required("Responsibilities are required"),
+  benefits: yup.string(),
+  deadline: yup
+    .date()
+    .required("Application deadline is required")
+    .min(new Date(), "Deadline must be in the future"),
+  accommodations: yup.string(),
+});
 
 const RecruitmentForm = () => {
-  const [formData, setFormData] = useState({
-    jobTitle: '',
-    department: '',
-    positions: '',
-    location: '',
-    employmentType: 'full-time',
-    experienceMin: '',
-    experienceMax: '',
-    salaryMin: '',
-    salaryMax: '',
-    qualifications: '',
-    skills: '',
-    responsibilities: '',
-    benefits: '',
-    deadline: '',
-    accommodations: ''
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      employmentType: "full-time",
+    },
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form submitted:', formData);
+  const [createJobSeeker, { isLoading }] = useJobProviderMutation();
+  const onSubmit = async (data) => {
+    // console.log("Form submitted:", data);
+    try {
+      const resp = await createJobSeeker(data).unwrap();
+      console.log(resp);
+      if (resp) {
+        toast.success("job request created successfully ");
+        console.log(resp);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("something went wrong");
+    }
     // Add your form submission logic here
   };
 
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Create Hiring Requirement</h2>
-        
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">
+          Create Hiring Requirement
+        </h2>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Basic Job Information */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
@@ -57,15 +101,18 @@ const RecruitmentForm = () => {
               <div className="flex items-center">
                 <Briefcase className="text-gray-400 w-5 h-5 absolute ml-3" />
                 <input
-                  type="text"
-                  name="jobTitle"
-                  required
-                  value={formData.jobTitle}
-                  onChange={handleChange}
-                  className="pl-10 w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  {...register("jobTitle")}
+                  className={`pl-10 w-full rounded-md border ${
+                    errors.jobTitle ? "border-red-500" : "border-gray-300"
+                  } px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
                   placeholder="e.g. Senior Software Developer"
                 />
               </div>
+              {errors.jobTitle && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.jobTitle.message}
+                </p>
+              )}
             </div>
 
             <div>
@@ -75,15 +122,18 @@ const RecruitmentForm = () => {
               <div className="flex items-center">
                 <Building2 className="text-gray-400 w-5 h-5 absolute ml-3" />
                 <input
-                  type="text"
-                  name="department"
-                  required
-                  value={formData.department}
-                  onChange={handleChange}
-                  className="pl-10 w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  {...register("department")}
+                  className={`pl-10 w-full rounded-md border ${
+                    errors.department ? "border-red-500" : "border-gray-300"
+                  } px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
                   placeholder="e.g. Engineering"
                 />
               </div>
+              {errors.department && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.department.message}
+                </p>
+              )}
             </div>
 
             <div>
@@ -94,14 +144,18 @@ const RecruitmentForm = () => {
                 <Users className="text-gray-400 w-5 h-5 absolute ml-3" />
                 <input
                   type="number"
-                  name="positions"
-                  required
-                  value={formData.positions}
-                  onChange={handleChange}
-                  className="pl-10 w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  {...register("positions")}
+                  className={`pl-10 w-full rounded-md border ${
+                    errors.positions ? "border-red-500" : "border-gray-300"
+                  } px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
                   placeholder="e.g. 2"
                 />
               </div>
+              {errors.positions && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.positions.message}
+                </p>
+              )}
             </div>
 
             <div>
@@ -111,15 +165,18 @@ const RecruitmentForm = () => {
               <div className="flex items-center">
                 <MapPin className="text-gray-400 w-5 h-5 absolute ml-3" />
                 <input
-                  type="text"
-                  name="location"
-                  required
-                  value={formData.location}
-                  onChange={handleChange}
-                  className="pl-10 w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="e.g. Bangalore, India"
+                  {...register("location")}
+                  className={`pl-10 w-full rounded-md border ${
+                    errors.location ? "border-red-500" : "border-gray-300"
+                  } px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                  placeholder="e.g. Pune, India"
                 />
               </div>
+              {errors.location && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.location.message}
+                </p>
+              )}
             </div>
           </div>
 
@@ -130,17 +187,21 @@ const RecruitmentForm = () => {
                 Employment Type *
               </label>
               <select
-                name="employmentType"
-                required
-                value={formData.employmentType}
-                onChange={handleChange}
-                className="w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                {...register("employmentType")}
+                className={`w-full rounded-md border ${
+                  errors.employmentType ? "border-red-500" : "border-gray-300"
+                } px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
               >
                 <option value="full-time">Full Time</option>
                 <option value="part-time">Part Time</option>
                 <option value="contract">Contract</option>
                 <option value="internship">Internship</option>
               </select>
+              {errors.employmentType && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.employmentType.message}
+                </p>
+              )}
             </div>
 
             <div>
@@ -148,24 +209,40 @@ const RecruitmentForm = () => {
                 Experience Required (Years) *
               </label>
               <div className="grid grid-cols-2 gap-4">
-                <input
-                  type="number"
-                  name="experienceMin"
-                  required
-                  value={formData.experienceMin}
-                  onChange={handleChange}
-                  className="w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Min"
-                />
-                <input
-                  type="number"
-                  name="experienceMax"
-                  required
-                  value={formData.experienceMax}
-                  onChange={handleChange}
-                  className="w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Max"
-                />
+                <div>
+                  <input
+                    type="number"
+                    {...register("experienceMin")}
+                    className={`w-full rounded-md border ${
+                      errors.experienceMin
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    } px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                    placeholder="Min"
+                  />
+                  {errors.experienceMin && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.experienceMin.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <input
+                    type="number"
+                    {...register("experienceMax")}
+                    className={`w-full rounded-md border ${
+                      errors.experienceMax
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    } px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                    placeholder="Max"
+                  />
+                  {errors.experienceMax && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.experienceMax.message}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -178,25 +255,33 @@ const RecruitmentForm = () => {
                   <IndianRupee className="text-gray-400 w-5 h-5 absolute ml-3" />
                   <input
                     type="number"
-                    name="salaryMin"
-                    required
-                    value={formData.salaryMin}
-                    onChange={handleChange}
-                    className="pl-10 w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    {...register("salaryMin")}
+                    className={`pl-10 w-full rounded-md border ${
+                      errors.salaryMin ? "border-red-500" : "border-gray-300"
+                    } px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
                     placeholder="Min"
                   />
+                  {errors.salaryMin && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.salaryMin.message}
+                    </p>
+                  )}
                 </div>
                 <div className="flex items-center">
                   <IndianRupee className="text-gray-400 w-5 h-5 absolute ml-3" />
                   <input
                     type="number"
-                    name="salaryMax"
-                    required
-                    value={formData.salaryMax}
-                    onChange={handleChange}
-                    className="pl-10 w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    {...register("salaryMax")}
+                    className={`pl-10 w-full rounded-md border ${
+                      errors.salaryMax ? "border-red-500" : "border-gray-300"
+                    } px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
                     placeholder="Max"
                   />
+                  {errors.salaryMax && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.salaryMax.message}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -210,15 +295,19 @@ const RecruitmentForm = () => {
             <div className="flex items-center">
               <GraduationCap className="text-gray-400 w-5 h-5 absolute ml-3" />
               <textarea
-                name="qualifications"
-                required
-                value={formData.qualifications}
-                onChange={handleChange}
+                {...register("qualifications")}
                 rows="3"
-                className="pl-10 w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={`pl-10 w-full rounded-md border ${
+                  errors.qualifications ? "border-red-500" : "border-gray-300"
+                } px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
                 placeholder="List required educational qualifications"
               />
             </div>
+            {errors.qualifications && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.qualifications.message}
+              </p>
+            )}
           </div>
 
           <div>
@@ -226,14 +315,18 @@ const RecruitmentForm = () => {
               Required Skills *
             </label>
             <textarea
-              name="skills"
-              required
-              value={formData.skills}
-              onChange={handleChange}
+              {...register("skills")}
               rows="3"
-              className="w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={`w-full rounded-md border ${
+                errors.skills ? "border-red-500" : "border-gray-300"
+              } px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
               placeholder="List required technical skills and competencies"
             />
+            {errors.skills && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.skills.message}
+              </p>
+            )}
           </div>
 
           {/* Job Details */}
@@ -242,14 +335,18 @@ const RecruitmentForm = () => {
               Job Responsibilities *
             </label>
             <textarea
-              name="responsibilities"
-              required
-              value={formData.responsibilities}
-              onChange={handleChange}
+              {...register("responsibilities")}
               rows="4"
-              className="w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={`w-full rounded-md border ${
+                errors.responsibilities ? "border-red-500" : "border-gray-300"
+              } px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
               placeholder="Describe the key responsibilities and duties"
             />
+            {errors.responsibilities && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.responsibilities.message}
+              </p>
+            )}
           </div>
 
           <div>
@@ -257,13 +354,18 @@ const RecruitmentForm = () => {
               Benefits & Perks
             </label>
             <textarea
-              name="benefits"
-              value={formData.benefits}
-              onChange={handleChange}
+              {...register("benefits")}
               rows="3"
-              className="w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={`w-full rounded-md border ${
+                errors.benefits ? "border-red-500" : "border-gray-300"
+              } px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
               placeholder="List employee benefits and perks"
             />
+            {errors.benefits && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.benefits.message}
+              </p>
+            )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -275,13 +377,17 @@ const RecruitmentForm = () => {
                 <Calendar className="text-gray-400 w-5 h-5 absolute ml-3" />
                 <input
                   type="date"
-                  name="deadline"
-                  required
-                  value={formData.deadline}
-                  onChange={handleChange}
-                  className="pl-10 w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  {...register("deadline")}
+                  className={`pl-10 w-full rounded-md border ${
+                    errors.deadline ? "border-red-500" : "border-gray-300"
+                  } px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
                 />
               </div>
+              {errors.deadline && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.deadline.message}
+                </p>
+              )}
             </div>
 
             <div>
@@ -289,11 +395,10 @@ const RecruitmentForm = () => {
                 Workplace Accommodations
               </label>
               <input
-                type="text"
-                name="accommodations"
-                value={formData.accommodations}
-                onChange={handleChange}
-                className="w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                {...register("accommodations")}
+                className={`w-full rounded-md border ${
+                  errors.accommodations ? "border-red-500" : "border-gray-300"
+                } px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
                 placeholder="e.g. Wheelchair accessible, flexible hours"
               />
             </div>
@@ -309,6 +414,7 @@ const RecruitmentForm = () => {
             </button>
             <button
               type="submit"
+              disabled={isLoading}
               className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               Submit Requirement

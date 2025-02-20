@@ -102,6 +102,13 @@ function Header() {
                 Scheme
               </Link>
             </li>
+            {user?.role === "admin" && (
+              <li>
+                <Link to="/admin" className="hover:text-blue-600">
+                  Admin
+                </Link>
+              </li>
+            )}
             {user?.role === "jobSeeker" && (
               <li>
                 <Link to="/apply" className="hover:text-blue-600">

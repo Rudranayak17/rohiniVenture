@@ -12,6 +12,7 @@ import { store } from "./redux/store.js";
 import { ToastContainer } from "react-toastify";
 import RedirectRoute from "./protectedRoute/RedirectRoute.jsx";
 import {
+  authError,
   selectCurrentIsAuth,
   selectCurrentUser,
   setCredentials,
@@ -20,6 +21,7 @@ import ProtectedRoute from "./protectedRoute/protectedRouter.jsx";
 import { useGetMyProfileQuery } from "./redux/api/auth";
 import { LoadingSkeleton } from "./loader/loader.jsx";
 import imagelogo from "@/assets/logo.jpeg";
+import Dashboard from "./page/Admin/dashboard";
 // Lazy load your pages
 const Home = lazy(() => import("./page/Home"));
 const Jobs = lazy(() => import("./page/Jobs"));
@@ -73,6 +75,7 @@ const AppContent = () => {
             <Route path="/apply-hiring" element={<Applhire />} />
           </Route>
           <Route path="/" element={<Home />} />
+          <Route path="/admin" element={<Dashboard />} />
           <Route path="/jobs" element={<Jobs />} />
           <Route path="/about" element={<AboutPage />} />
 
