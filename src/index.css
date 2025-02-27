@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply font-sans text-gray-800 antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-heading;
+}
+
+.section-padding {
+  @apply py-16 md:py-24;
+}
+
+.container {
+  @apply px-4 mx-auto max-w-7xl;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center px-6 py-3 text-base font-medium transition-all duration-200 rounded-md;
+}
+
+.btn-primary {
+  @apply text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300;
+}
+
+.btn-secondary {
+  @apply text-white bg-secondary-600 hover:bg-secondary-700 focus:ring-4 focus:ring-secondary-300;
+}
+
+.btn-outline {
+  @apply text-primary-600 bg-transparent border border-primary-600 hover:bg-primary-50 focus:ring-4 focus:ring-primary-100;
+}
+
+.card {
+  @apply p-6 bg-white rounded-lg shadow-md transition-all duration-300 hover:shadow-lg;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-in-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.8s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes growUp {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--target-height);
+  }
+}
